@@ -1,0 +1,59 @@
+
+<html>
+<head>
+<title>Bitcoin Price Index Watcher in HTML5</title>
+<style type="text/css">
+  #data {
+    width: 400px;
+    border: 1px dashed black;
+    font-size: 20px;
+    text-align: center;
+    margin: 0 auto;
+    margin-top: 50px;
+    padding: 10px;
+  }
+
+  #logo {
+    width: 320px;
+    height: 320px;
+    margin: 0 auto;
+    margin-top: 50px;
+    display: block;
+  }
+</style>
+</head>
+<body>
+  <img id="logo" src="https://st3.depositphotos.com/5906102/14454/v/600/depositphotos_144548047-stock-illustration-crypto-currency-bitcoin-golden-symbol.jpg" />
+  <div id="data" />
+  <script type="text/javascript">
+    var xmlhttp = new XMLHttpRequest();
+    var url = "https://api.coindesk.com/v1/bpi/currentprice.json";
+
+    xmlhttp.onreadystatechange = function() {
+      if (this.readyState == 4  &&  this.status == 200) {
+        var json = JSON.parse(this.responseText);
+        parseJson(json);
+      }		
+    };
+
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+
+    function parseJson(json) {
+      var time = "<b>Last Updated : " + json["time"]["updated"] + "</b>";
+      var usdValue = "1 Bitcoin is $" + json["bpi"]["USD"]["rate"];
+      var gbpValue = "1 Bitcoin is &pound;" + json["bpi"]["GBP"]["rate"];
+      var euroValue = "1 Bitcoin is &euro;" + json["bpi"]["EUR"]["rate"];
+      console.log(time);
+      console.log(usdValue);
+      console.log(gbpValue);
+      console.log(euroValue);
+
+      document.getElementById("data").innerHTML = time + 
+	       "<br /><br />" + usdValue + 
+		   "<br />" + gbpValue + 
+		   "<br />" + euroValue;
+}
+</script>
+</body>
+</html>
